@@ -1,3 +1,4 @@
+import { useState, useContext } from 'react'
 import { View, 
   Text, 
   TextInput, 
@@ -6,9 +7,16 @@ import { View,
   TouchableOpacity,
   Dimensions } from 'react-native'
 
+import { AuthContext } from '../auth/Authentication'
+
 const { width, height } = Dimensions.get('window')
 
-const SignIn = () => {
+const SignIn = ({ navigation }) => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const { signIn } = useContext(AuthContext)
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -18,16 +26,20 @@ const SignIn = () => {
         <View style={styles.formContainer}>
           <TextInput 
             placeholder="Email" 
-            style={styles.input}/>
+            style={styles.input}
+            onChangeText={setEmail}/>
           <TextInput 
             placeholder="Password" 
-            style={styles.input}/>
-          <TouchableOpacity style={styles.button}>
+            style={styles.input}
+            onChangeText={setPassword}/>
+          <TouchableOpacity 
+            style={styles.button}
+            onPress={() => signIn({ email, password, token: 'testtoken' })}>
             <Text style={styles.buttonText({width})}>Sign in</Text>
           </TouchableOpacity>
           <View style={styles.signUpContainer}>
             <Text style={{fontSize: width * 0.035}}>Don't have an account? </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
               <Text style={styles.signUpText({width})}>Sign up</Text>
             </TouchableOpacity>
           </View>

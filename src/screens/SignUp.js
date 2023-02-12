@@ -8,7 +8,7 @@ import { View,
 
 const { width, height } = Dimensions.get('window')
 
-const SignUp = () => {
+const SignUp = ({ navigation }) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -33,7 +33,7 @@ const SignUp = () => {
           </TouchableOpacity>
           <View style={styles.signInContainer}>
             <Text style={{fontSize: width * 0.035}}>Do you already have an account? </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
               <Text style={styles.signInText({width})}>Sign in</Text>
             </TouchableOpacity>
         </View>
