@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import SplashScreen from '../screens/Splash'
-import HomeScreen from '../screens/Home'
+import MainNavigator from '../navigation/Main'
 import AuthNavigator from '../navigation/Auth'
 
 export const AuthContext = createContext()
@@ -94,7 +94,7 @@ const Authentication = () => {
           ) : state.userToken == null ? (
             <Stack.Screen name="Auth" component={AuthNavigator} options={{headerShown: false}}/>
           ) : (
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Main" component={MainNavigator} options={{headerShown: false}}/>
           )
         }
         </Stack.Navigator>
