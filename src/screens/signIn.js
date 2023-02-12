@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     color: 'black'
   }),
   formContainer: {
-    flex: 1,
+    flex: 2,
     alignItems: 'center',
   },
   input: {
