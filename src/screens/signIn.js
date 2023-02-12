@@ -25,12 +25,12 @@ const SignIn = () => {
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText({width})}>Sign in</Text>
           </TouchableOpacity>
-        </View>
-        <View style={styles.signUpContainer}>
-          <Text style={{fontSize: width * 0.035}}>Don't have an account? </Text>
-          <TouchableOpacity>
-            <Text style={styles.signUpText({width})}>Sign up</Text>
-          </TouchableOpacity>
+          <View style={styles.signUpContainer}>
+            <Text style={{fontSize: width * 0.035}}>Don't have an account? </Text>
+            <TouchableOpacity>
+              <Text style={styles.signUpText({width})}>Sign up</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -78,9 +78,10 @@ const styles = StyleSheet.create({
     fontWeight: '300'
   }),
   signUpContainer: {
-    flex: 2,
+    width: '80%',
     justifyContent: 'center',
     flexDirection: 'row',
+    marginTop: 10
   },
   signUpText: ({width}) => ({
     fontSize: width * 0.035,
