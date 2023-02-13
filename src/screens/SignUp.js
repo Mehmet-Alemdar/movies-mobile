@@ -1,3 +1,4 @@
+import { useState, useContext } from 'react'
 import { View, 
   Text, 
   TextInput, 
@@ -5,10 +6,35 @@ import { View,
   StyleSheet, 
   TouchableOpacity,
   Dimensions } from 'react-native'
+import { showMessage } from 'react-native-flash-message'
+
+import { AuthContext } from '../auth/Authentication'
+import { signUpApi } from '../lib/apiConnection'
 
 const { width, height } = Dimensions.get('window')
 
 const SignUp = ({ navigation }) => {
+  const [name, setName] = useState('')
+  const [surname, setSurname] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const { signIn } = useContext(AuthContext)
+
+  const handlerSignUp = () => {
+    signUpApi({name, surname, email, password})
+    .then(res => {
+      if(!res.error) {
+        signIn({email: email, token: res.token})
+        return
+      }
+      showMessage({
+        message: res.error,
+        type: "info",
+      });
+    })
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -18,17 +44,23 @@ const SignUp = ({ navigation }) => {
         <View style={styles.formContainer}>
           <TextInput 
             placeholder="Name" 
-            style={styles.input}/>
+            style={styles.input}
+            onChangeText={setName}/>
           <TextInput 
             placeholder="Surname" 
-            style={styles.input}/>
+            style={styles.input}
+            onChangeText={setSurname}/>
           <TextInput 
             placeholder="Email" 
-            style={styles.input}/>
+            style={styles.input}
+            onChangeText={setEmail}/>
           <TextInput 
             placeholder="Password" 
-            style={styles.input}/>
-          <TouchableOpacity style={styles.button}>
+            style={styles.input}
+            onChangeText={setPassword}/>
+          <TouchableOpacity 
+            style={styles.button}
+            onPress={() => handlerSignUp()}>
             <Text style={styles.buttonText({width})}>Sign up</Text>
           </TouchableOpacity>
           <View style={styles.signInContainer}>

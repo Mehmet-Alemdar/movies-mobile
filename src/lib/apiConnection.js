@@ -10,3 +10,12 @@ export const signInApi = async (path, body) => {
     return {message: 'sign in error', error}
   }
 }
+
+export const signUpApi = async (body) => {
+  try {
+    const { data } = await axios.post(`${baseUrl}/signup`, body)
+    return data
+  } catch (error) {
+    return {message: 'sign up error', error}
+  }
+}
