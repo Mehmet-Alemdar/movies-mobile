@@ -6,8 +6,10 @@ import { View,
   StyleSheet, 
   TouchableOpacity,
   Dimensions } from 'react-native'
+import { showMessage } from "react-native-flash-message";
 
 import { AuthContext } from '../auth/Authentication'
+import { signInApi } from '../lib/apiConnection';
 
 const { width, height } = Dimensions.get('window')
 
@@ -17,11 +19,27 @@ const SignIn = ({ navigation }) => {
 
   const { signIn } = useContext(AuthContext)
 
+  const handlerSignIn = () => {
+    signInApi("signin", {
+      "email": email,
+      "password": password
+    }).then(res => {
+      if(!res.error) {
+        signIn({email: email, token: res.token})
+        return
+      }
+      showMessage({
+        message: res.error,
+        type: "info",
+      });
+    })
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.titleContainer}>
-          <Text style={styles.titleText({width})}>SignIn</Text>
+          <Text style={styles.titleText({width})}>Sign in</Text>
         </View>
         <View style={styles.formContainer}>
           <TextInput 
@@ -34,7 +52,7 @@ const SignIn = ({ navigation }) => {
             onChangeText={setPassword}/>
           <TouchableOpacity 
             style={styles.button}
-            onPress={() => signIn({ email, password, token: 'testtoken' })}>
+            onPress={() => handlerSignIn()}>
             <Text style={styles.buttonText({width})}>Sign in</Text>
           </TouchableOpacity>
           <View style={styles.signUpContainer}>
