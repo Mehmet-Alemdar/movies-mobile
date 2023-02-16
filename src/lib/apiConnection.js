@@ -19,3 +19,15 @@ export const signUpApi = async (body) => {
     return {message: 'sign up error', error}
   }
 }
+
+export const fetchMovies = async({ token }) => {
+  try {
+    const { data } = await axios.get(`${baseUrl}/api/movie`, {
+      key: "value",
+      headers: { Authorization: 'Bearer ' + token }
+    })
+    return data
+  } catch(error) {
+    return {message: 'fetch movies error', error}
+  }
+}
