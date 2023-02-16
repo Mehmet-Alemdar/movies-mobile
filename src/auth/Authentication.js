@@ -2,6 +2,7 @@ import React, { createContext, useReducer, useEffect, useMemo } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { MyTheme } from '../lib/theme'
 
 import SplashScreen from '../screens/Splash'
 import MainNavigator from '../navigation/Main'
@@ -96,7 +97,7 @@ const Authentication = () => {
 
   return (
     <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
+      <NavigationContainer theme={MyTheme}>
         <Stack.Navigator>
           {state.isLoading ? (
             <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown: false}}/>

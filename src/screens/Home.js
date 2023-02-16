@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
-import { View, Text, Image, SafeAreaView, StyleSheet, TouchableOpacity, Dimensions, ImageBackground } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { View, Text, Image, SafeAreaView, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, ScrollView } from 'react-native'
+import { useTheme } from '@react-navigation/native';
 
 import { AuthContext } from '../auth/Authentication'
 import { fetchMovies } from '../lib/apiConnection'
-import { ScrollView } from 'react-native-gesture-handler'
 
 const { width, height } = Dimensions.get('window')
 
@@ -12,7 +11,7 @@ const Home = () => {
   const [movies, setMovies] = useState([])
   const { signOut } = useContext(AuthContext)
   const { getToken } = useContext(AuthContext)
-
+  const { colors } = useTheme();
 
   useEffect(() => {
     getToken().then(token => {
@@ -47,7 +46,7 @@ const Home = () => {
     <SafeAreaView style={{flex: 1}}>
       {!movies.length > 0 ?
       (<Text>Loading...</Text>) 
-      : <ScrollView contentContainerStyle={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', }}>
+      : <ScrollView contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', backgroundColor: colors.background }}>
         {
           movies.map((movie, key) => {
             return (
@@ -67,7 +66,7 @@ const Home = () => {
 const styles = StyleSheet.create({
   movieContainer: ({height}) => ({
     width: '50%',
-    height: height * 0.3,
+    height: height * 0.35,
   }),
   backgroundImage: {
     width: '100%',
@@ -80,9 +79,11 @@ const styles = StyleSheet.create({
      alignItems: 'center'
   },
   movieImage: ({height}) => ({
-    width: 100,
+    width: 120,
     height: height*0.2, 
-    resizeMode: 'contain'
+    resizeMode: 'contain',
+    borderRadius: 8,
+    marginBottom: 5
   }),
   movieCardText: ({height}) => ({
     color: 'white',
