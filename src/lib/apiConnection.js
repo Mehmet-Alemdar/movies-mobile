@@ -31,3 +31,15 @@ export const fetchMovies = async({ token }) => {
     return {message: 'fetch movies error', error}
   }
 }
+
+export const fetchUsers = async({ token }) => {
+  try {
+    const { data } = await axios.get(`${baseUrl}/api/user`, {
+      key: "value",
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    return data
+  } catch (error) {
+    return {message: 'fetch users error', error}
+  }
+}
