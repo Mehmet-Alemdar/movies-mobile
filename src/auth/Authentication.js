@@ -82,8 +82,17 @@ const Authentication = () => {
         console.log("error signing up", e);
       }
       dispatch({ type: 'SIGN_IN', token: data.token})
+    },
+    getToken: async () => {
+      try {
+        const token = await state.userToken
+        return token
+      } catch (error) {
+        console.log("error getting token", error);
+        return {error: error}
+      }
     }
-  }), [])
+  }), [state.userToken])
 
   return (
     <AuthContext.Provider value={authContext}>

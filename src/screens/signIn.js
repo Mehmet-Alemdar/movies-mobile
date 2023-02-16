@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { View, 
   Text, 
   TextInput, 
@@ -7,6 +7,7 @@ import { View,
   TouchableOpacity,
   Dimensions } from 'react-native'
 import { showMessage } from "react-native-flash-message";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { AuthContext } from '../auth/Authentication'
 import { signInApi } from '../lib/apiConnection';
@@ -18,6 +19,7 @@ const SignIn = ({ navigation }) => {
   const [password, setPassword] = useState('')
 
   const { signIn } = useContext(AuthContext)
+  const { getToken } = useContext(AuthContext)
 
   const handlerSignIn = () => {
     signInApi("signin", {
@@ -25,7 +27,9 @@ const SignIn = ({ navigation }) => {
       "password": password
     }).then(res => {
       if(!res.error) {
+        console.log("sign in res:", res);
         signIn({email: email, token: res.token})
+        console.log('sign in success');
         return
       }
       showMessage({
@@ -34,6 +38,12 @@ const SignIn = ({ navigation }) => {
       });
     })
   }
+
+  useEffect(() => {
+    getToken().then(res => {
+      console.log("sign in token", res);
+    })
+  }, [])
 
   return (
     <SafeAreaView style={{flex: 1}}>
