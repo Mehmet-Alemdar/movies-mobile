@@ -15,16 +15,11 @@ const Home = () => {
 
   useEffect(() => {
     getToken().then(token => {
-      console.log("home token", token);
       fetchMovies({token}).then(res => {
         setMovies(res)
       })
     })
   }, [])
-
-  useEffect(() => {
-    console.log("movies", movies);
-  }, [movies])
 
   const MovieCard = ({movie}) => {
     return (
@@ -56,9 +51,6 @@ const Home = () => {
         }
         </ScrollView>
       }
-      {/* <TouchableOpacity onPress={() => signOut()}>
-        <Text>Sign out</Text>
-      </TouchableOpacity> */}
     </SafeAreaView>
   )
 }
