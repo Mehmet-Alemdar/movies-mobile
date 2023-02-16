@@ -16,7 +16,6 @@ const Users = () => {
 
   useEffect(() => {
     getToken().then(token => {
-      console.log("users token", token);
       fetchUsers({token}).then(res => {
         setUsers(res)
       })
