@@ -28,7 +28,7 @@ const SignIn = ({ navigation }) => {
     }).then(res => {
       if(!res.error) {
         console.log("sign in res:", res);
-        signIn({email: email, token: res.token})
+        signIn({email: email, token: res.token, id: res.id})
         console.log('sign in success');
         return
       }
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   titleText: ({width})=> ({
     fontSize: width * 0.08,
     fontWeight: 'bold',
-    color: 'black'
+    color: 'white'
   }),
   formContainer: {
     flex: 2,
@@ -99,9 +99,10 @@ const styles = StyleSheet.create({
     width: '80%',
     height: height * 0.06,
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: 'white',
     marginTop: 10,
-    borderRadius: 3
+    borderRadius: 3,
+    color: 'white',
   },
   button: {
     width: '80%',

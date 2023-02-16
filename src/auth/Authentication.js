@@ -20,6 +20,7 @@ const Authentication = () => {
           return {
             ...prevState,
             userToken: action.token,
+            userId: action.id,
             isLoading: false,
           };
         case 'SIGN_IN':
@@ -27,12 +28,14 @@ const Authentication = () => {
             ...prevState,
             isSignout: false,
             userToken: action.token,
+            userId: action.id
           };
         case 'SIGN_OUT':
           return {
             ...prevState,
             isSignout: true,
             userToken: null,
+            userId: null
           }
       }
     },
@@ -40,20 +43,20 @@ const Authentication = () => {
       isLoading: true,
       isSignout: false,
       userToken: null,
+      userId: null
     }
   )
 
   useEffect(() => {
     const bootstrapAsync = async () => {
-      let userToken
-
+      let user
       try {
-        userToken = await AsyncStorage.getItem('userToken')
+        user = JSON.parse(await AsyncStorage.getItem('user'))
       } catch(e) {
         console.log("error fetching token");
       }
 
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken })
+      dispatch({ type: 'RESTORE_TOKEN', token: user.token, id: user.id })
     }
 
     bootstrapAsync()
@@ -62,15 +65,16 @@ const Authentication = () => {
   const authContext = useMemo(() => ({
     signIn: async data => {
       try {
-        await AsyncStorage.setItem('userToken', data.token)
+        console.log("sign in data", data);
+        await AsyncStorage.setItem('user', JSON.stringify(data))
       } catch(e) {
         console.log("error signing in", e);
       }
-      dispatch({ type: 'SIGN_IN', token: data.token})
+      dispatch({ type: 'SIGN_IN', token: data.token, id: data.id})
     },
     signOut: async () => {
       try {
-        await AsyncStorage.removeItem('userToken')
+        await AsyncStorage.removeItem('user')
       } catch(e) {
         console.log("error signing out", e);
       }
@@ -78,11 +82,11 @@ const Authentication = () => {
     },
     signUp: async (data) => {
       try {
-        await AsyncStorage.setItem('userToken', data.token)
+        await AsyncStorage.setItem('user', JSON.stringify(data))
       } catch(e) {
         console.log("error signing up", e);
       }
-      dispatch({ type: 'SIGN_IN', token: data.token})
+      dispatch({ type: 'SIGN_IN', token: data.token, id: data.id})
     },
     getToken: async () => {
       try {
@@ -92,8 +96,18 @@ const Authentication = () => {
         console.log("error getting token", error);
         return {error: error}
       }
+    },
+    getUserIdAndToken: async () => {
+      try {
+        const id = await state.userId
+        const token = await state.userToken
+        return { id, token }
+      } catch (error) {
+        console.log("error getting user id", error);
+        return {error: error}
+      }
     }
-  }), [state.userToken])
+  }), [state.userToken, state.userId])
 
   return (
     <AuthContext.Provider value={authContext}>
