@@ -5,5 +5,6 @@ export const MyTheme = {
   colors: {
     ...DefaultTheme.colors,
     background: '#05001A',
+    textColor: '#fff',
   },
 };
