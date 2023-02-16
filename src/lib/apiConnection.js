@@ -43,3 +43,15 @@ export const fetchUsers = async({ token }) => {
     return {message: 'fetch users error', error}
   }
 }
+
+export const fetchUser = async({ token, id }) => {
+  try {
+    const { data } = await axios.get(`${baseUrl}/api/user/${id}`, {
+      key: "value",
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    return data
+  } catch (error) {
+    return {message: 'fetch user error', error}
+  }
+}
