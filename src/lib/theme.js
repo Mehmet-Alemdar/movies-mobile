@@ -6,5 +6,7 @@ export const MyTheme = {
     ...DefaultTheme.colors,
     background: '#05001A',
     textColor: '#fff',
+    inputTextColor: '#05001A',
+    buttonBackground: '#F46400'
   },
 };
