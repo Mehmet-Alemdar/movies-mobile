@@ -8,8 +8,13 @@ import { View,
   Dimensions } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
 
+import { useTheme } from '@react-navigation/native'
+
 import { AuthContext } from '../auth/Authentication'
 import { signUpApi } from '../lib/apiConnection'
+import SignUpBackgroundImage from '../components/signUpBackgroundImage';
+import Input from '../components/input'
+import Button from '../components/button'
 
 const { width, height } = Dimensions.get('window')
 
@@ -18,6 +23,8 @@ const SignUp = ({ navigation }) => {
   const [surname, setSurname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  
+  const { colors } = useTheme()
 
   const { signIn } = useContext(AuthContext)
 
@@ -25,7 +32,7 @@ const SignUp = ({ navigation }) => {
     signUpApi({name, surname, email, password})
     .then(res => {
       if(!res.error) {
-        signIn({email: email, token: res.token})
+        signIn({email: email, token: res.token, id: res.id})
         return
       }
       showMessage({
@@ -37,40 +44,28 @@ const SignUp = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleText({width})}>Sign up</Text>
+      <SignUpBackgroundImage>
+        <View style={styles.container}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleText({width})}>Sign up</Text>
+          </View>
+          <View style={styles.formContainer}>
+            <Input placeholder={"Name"} onChangeText={setName} />
+            <Input placeholder={"Surname"} onChangeText={setSurname} />
+            <Input placeholder={"Email"} onChangeText={setEmail} />
+            <Input placeholder={"Password"} onChangeText={setPassword} />
+            <Button onPress={handlerSignUp}>
+              <Text style={styles.buttonText({width})}>Sign up</Text>
+            </Button>
+            <View style={styles.signInContainer}>
+              <Text style={{fontSize: width * 0.035, color: colors.textColor}}>Do you already have an account? </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+                <Text style={[styles.signInText({width}), {color: colors.textColor}]}>Sign in</Text>
+              </TouchableOpacity>
+          </View>
+          </View>
         </View>
-        <View style={styles.formContainer}>
-          <TextInput 
-            placeholder="Name" 
-            style={styles.input}
-            onChangeText={setName}/>
-          <TextInput 
-            placeholder="Surname" 
-            style={styles.input}
-            onChangeText={setSurname}/>
-          <TextInput 
-            placeholder="Email" 
-            style={styles.input}
-            onChangeText={setEmail}/>
-          <TextInput 
-            placeholder="Password" 
-            style={styles.input}
-            onChangeText={setPassword}/>
-          <TouchableOpacity 
-            style={styles.button}
-            onPress={() => handlerSignUp()}>
-            <Text style={styles.buttonText({width})}>Sign up</Text>
-          </TouchableOpacity>
-          <View style={styles.signInContainer}>
-            <Text style={{fontSize: width * 0.035}}>Do you already have an account? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
-              <Text style={styles.signInText({width})}>Sign in</Text>
-            </TouchableOpacity>
-        </View>
-        </View>
-      </View>
+      </SignUpBackgroundImage>
     </SafeAreaView>
   )
 }
@@ -78,6 +73,7 @@ const SignUp = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)'
   },
   titleContainer: {
     flex: 1,
@@ -87,28 +83,11 @@ const styles = StyleSheet.create({
   titleText: ({width})=> ({
     fontSize: width * 0.08,
     fontWeight: 'bold',
-    color: 'black'
+    color: 'white'
   }),
   formContainer: {
     flex: 2,
     alignItems: 'center',
-  },
-  input: {
-    width: '80%',
-    height: height * 0.06,
-    borderWidth: 1,
-    borderColor: 'black',
-    marginTop: 10,
-    borderRadius: 3
-  },
-  button: {
-    width: '80%',
-    height: height * 0.06,
-    backgroundColor: 'black',
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 3
   },
   buttonText: ({width}) => ({
     color: 'white',

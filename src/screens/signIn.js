@@ -1,22 +1,28 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, useRef } from 'react'
 import { View, 
   Text, 
   TextInput, 
   SafeAreaView, 
   StyleSheet, 
   TouchableOpacity,
-  Dimensions } from 'react-native'
+  Dimensions,
+  Animated } from 'react-native'
 import { showMessage } from "react-native-flash-message";
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useTheme } from '@react-navigation/native';
 
 import { AuthContext } from '../auth/Authentication'
 import { signInApi } from '../lib/apiConnection';
+import SignUpBackgroundImage from '../components/signUpBackgroundImage';
+import Input from '../components/input'
+import Button from '../components/button'
 
 const { width, height } = Dimensions.get('window')
 
 const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const { colors } = useTheme()
 
   const { signIn } = useContext(AuthContext)
   const { getToken } = useContext(AuthContext)
@@ -29,7 +35,6 @@ const SignIn = ({ navigation }) => {
       if(!res.error) {
         console.log("sign in res:", res);
         signIn({email: email, token: res.token, id: res.id})
-        console.log('sign in success');
         return
       }
       showMessage({
@@ -45,34 +50,30 @@ const SignIn = ({ navigation }) => {
     })
   }, [])
 
+
+
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleText({width})}>Sign in</Text>
-        </View>
-        <View style={styles.formContainer}>
-          <TextInput 
-            placeholder="Email" 
-            style={styles.input}
-            onChangeText={setEmail}/>
-          <TextInput 
-            placeholder="Password" 
-            style={styles.input}
-            onChangeText={setPassword}/>
-          <TouchableOpacity 
-            style={styles.button}
-            onPress={() => handlerSignIn()}>
-            <Text style={styles.buttonText({width})}>Sign in</Text>
-          </TouchableOpacity>
-          <View style={styles.signUpContainer}>
-            <Text style={{fontSize: width * 0.035}}>Don't have an account? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-              <Text style={styles.signUpText({width})}>Sign up</Text>
-            </TouchableOpacity>
+      <SignUpBackgroundImage>
+        <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleText({width})}>Sign in</Text>
+          </View>
+          <View style={styles.formContainer}>
+            <Input placeholder={"Email"} onChangeText={setEmail} />
+            <Input placeholder={"Password"} onChangeText={setPassword} />
+            <Button onPress={handlerSignIn}>
+              <Text style={styles.buttonText({width})}>Sign in</Text>
+            </Button>
+            <View style={styles.signUpContainer}>
+              <Text style={{fontSize: width * 0.035, color: colors.textColor}}>Don't have an account? </Text>
+              <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+                <Text style={[styles.signUpText({width}), {color: colors.textColor}]}>Sign up</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
+      </SignUpBackgroundImage>
     </SafeAreaView>
   )
 }
@@ -94,24 +95,6 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 2,
     alignItems: 'center',
-  },
-  input: {
-    width: '80%',
-    height: height * 0.06,
-    borderWidth: 1,
-    borderColor: 'white',
-    marginTop: 10,
-    borderRadius: 3,
-    color: 'white',
-  },
-  button: {
-    width: '80%',
-    height: height * 0.06,
-    backgroundColor: 'black',
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 3
   },
   buttonText: ({width}) => ({
     color: 'white',
