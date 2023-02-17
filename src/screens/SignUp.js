@@ -53,7 +53,7 @@ const SignUp = ({ navigation }) => {
             <Input placeholder={"Name"} onChangeText={setName} />
             <Input placeholder={"Surname"} onChangeText={setSurname} />
             <Input placeholder={"Email"} onChangeText={setEmail} />
-            <Input placeholder={"Password"} onChangeText={setPassword} />
+            <Input placeholder={"Password"} onChangeText={setPassword} secureTextEntry={true}/>
             <Button onPress={handlerSignUp}>
               <Text style={styles.buttonText({width})}>Sign up</Text>
             </Button>

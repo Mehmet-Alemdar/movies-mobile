@@ -61,7 +61,7 @@ const SignIn = ({ navigation }) => {
           </View>
           <View style={styles.formContainer}>
             <Input placeholder={"Email"} onChangeText={setEmail} />
-            <Input placeholder={"Password"} onChangeText={setPassword} />
+            <Input placeholder={"Password"} onChangeText={setPassword} secureTextEntry={true} />
             <Button onPress={handlerSignIn}>
               <Text style={styles.buttonText({width})}>Sign in</Text>
             </Button>
