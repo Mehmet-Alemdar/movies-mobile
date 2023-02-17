@@ -52,11 +52,12 @@ const Authentication = () => {
       let user
       try {
         user = JSON.parse(await AsyncStorage.getItem('user'))
+        console.log("bootstrap user", user);
       } catch(e) {
         console.log("error fetching token");
       }
 
-      dispatch({ type: 'RESTORE_TOKEN', token: user.token, id: user.id })
+      dispatch({ type: 'RESTORE_TOKEN', token: user?.token, id: user?.id })
     }
 
     bootstrapAsync()
