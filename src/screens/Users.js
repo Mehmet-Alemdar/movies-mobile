@@ -25,6 +25,8 @@ const Users = () => {
   useEffect(() => {
     if(users.length > 0) {
       setLoading(false)
+    } else {
+      setLoading(true)
     }
   }, [users])
 
