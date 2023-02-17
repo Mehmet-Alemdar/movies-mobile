@@ -7,6 +7,7 @@ export const MyTheme = {
     background: '#05001A',
     textColor: '#fff',
     inputTextColor: '#05001A',
-    buttonBackground: '#F46400'
+    buttonBackground: '#F46400',
+    modalBackground: 'gray'
   },
 };
