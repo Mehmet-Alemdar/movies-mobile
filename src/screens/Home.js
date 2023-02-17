@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000c0', 
     height: '100%', 
     justifyContent: 'center',
-     alignItems: 'center'
+    alignItems: 'center'
   },
   movieImage: ({height}) => ({
     width: 120,
