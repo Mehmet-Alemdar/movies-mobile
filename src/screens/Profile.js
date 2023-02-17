@@ -4,12 +4,15 @@ import { useTheme } from '@react-navigation/native';
 
 import { fetchUser } from '../lib/apiConnection'
 import { AuthContext } from '../auth/Authentication'
+import ModalUserUpdate from '../components/modal'
+import Button from '../components/button'
 
 const { width, height } = Dimensions.get('window')
 
 const Profile = () => {
   const [user, setUser] = useState()
   const [loading, setLoading] = useState(true)
+  const [modalVisible, setModalVisible] = useState(false)
 
   const { colors } = useTheme()
 
@@ -22,7 +25,7 @@ const Profile = () => {
         setUser(res)
       })
     })
-  }, [])
+  }, [modalVisible])
 
   useEffect(() => {
     if(user) {
@@ -33,6 +36,13 @@ const Profile = () => {
     }
   }, [user])
 
+  const modalOpen = () => {
+    setModalVisible(true)
+  }
+
+  const modalClose = () => {
+    setModalVisible(false)
+  }
   
   return (
     <View style={stlyes.container}>
@@ -41,9 +51,13 @@ const Profile = () => {
         : (<>
             <Text style={stlyes.text({height, colors})}>{user.name}</Text>
             <Text style={stlyes.text({height, colors})}>{user.surname}</Text>
-            <TouchableOpacity onPress={() => signOut()} style={stlyes.button}>
+            <ModalUserUpdate visible={modalVisible} handleClose={modalClose} />
+            <Button onPress={modalOpen}>
+              <Text style={stlyes.text({height, colors})}>Update information</Text>
+            </Button>
+            <Button onPress={signOut}>
               <Text style={stlyes.text({height, colors})}>Sign out</Text>
-            </TouchableOpacity>
+            </Button>
           </>)}
     </View>
   )
@@ -59,15 +73,6 @@ const stlyes = StyleSheet.create({
     fontSize: height * 0.02,
     color: colors.textColor
   })),
-  button: {
-    width: '80%',
-    height: height * 0.06,
-    backgroundColor: 'black',
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 3
-  },
 })
 
 export default Profile

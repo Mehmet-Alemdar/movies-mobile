@@ -55,3 +55,20 @@ export const fetchUser = async({ token, id }) => {
     return {message: 'fetch user error', error}
   }
 }
+
+export const updateUser = async({ token, id, body }) => {
+  try {
+    const { data } = await axios.patch(`${baseUrl}/api/user/update/${id}`,
+    {
+      "name": body.name,
+      "surname": body.surname,
+    },
+    {
+      key: "value",
+      headers: { Authorization: `Bearer ${token}`}
+    })
+    return data
+  } catch (error) {
+    return {message: 'update user error', error}
+  }
+}
