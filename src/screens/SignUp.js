@@ -29,6 +29,14 @@ const SignUp = ({ navigation }) => {
   const { signIn } = useContext(AuthContext)
 
   const handlerSignUp = () => {
+    if(name === '' || surname === '' || email === '' || password === '') {
+      showMessage({
+        message: "Please fill all the fields",
+        type: "info",
+        backgroundColor: colors.buttonBackground,
+      });
+      return
+    }
     signUpApi({name, surname, email, password})
     .then(res => {
       if(!res.error) {
