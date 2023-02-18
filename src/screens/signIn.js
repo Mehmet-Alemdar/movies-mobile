@@ -40,6 +40,7 @@ const SignIn = ({ navigation }) => {
       showMessage({
         message: res.error,
         type: "info",
+        backgroundColor: colors.buttonBackground,
       });
     })
   }

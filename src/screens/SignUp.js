@@ -38,6 +38,7 @@ const SignUp = ({ navigation }) => {
       showMessage({
         message: res.error,
         type: "info",
+        backgroundColor: colors.buttonBackground,
       });
     })
   }
