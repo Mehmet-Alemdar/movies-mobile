@@ -5,10 +5,11 @@ import { useTheme } from '@react-navigation/native';
 import { fetchUser } from '../lib/apiConnection'
 import { AuthContext } from '../auth/Authentication'
 
-const { width, height } = Dimensions.get('window')
 import Input from './input'
 import Button from './button'
 import { updateUser } from '../lib/apiConnection'
+
+const { width, height } = Dimensions.get('window')
 
 const ModalUserUpdate = ({ visible, handleClose}) => {
   const [name, setName] = useState()
@@ -39,11 +40,7 @@ const ModalUserUpdate = ({ visible, handleClose}) => {
 
   const handleUpdate = () => {
     getUserIdAndToken().then(({token, id}) => {
-      console.log("token", token);
-      console.log("id", id);
-      console.log("user", user);
       updateUser({ token, id, body: {"name": name, "surname": surname} }).then(res => {
-        console.log("res", res);
         handleClose()
       })
     })
@@ -59,13 +56,14 @@ const ModalUserUpdate = ({ visible, handleClose}) => {
         visible={visible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView(colors.modalBackground)}>
+            <Text style={styles.textStyle({height})}>Update your name</Text>
             <Input placeholder="Name" value={name} onChangeText={setName} />
             <Input placeholder="Surname" value={surname} onChangeText={setSurname} />
             <Button onPress={() => handleUpdate()}>
-              <Text style={styles.textStyle}>Update</Text>
+              <Text style={styles.textStyle({height})}>Update</Text>
             </Button>
             <Button onPress={() => handleClose()}>
-              <Text style={styles.textStyle}>Close</Text>
+              <Text style={styles.textStyle({height})}>Close</Text>
             </Button>
           </View>
         </View>
@@ -79,7 +77,6 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.8)',
   },
   modalView: (background) =>  ({
@@ -97,22 +94,12 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   }),
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
+  textStyle: ({height}) => ( {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
-  },
+    fontSize: height * 0.02,
+  }),
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
