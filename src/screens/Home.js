@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react'
-import { View, Text, Image, SafeAreaView, StyleSheet, TouchableOpacity, Dimensions, ImageBackground, ScrollView } from 'react-native'
+import { useContext, useEffect, useState, useCallback } from 'react'
+import { View, Text, Image, SafeAreaView, StyleSheet, RefreshControl, Dimensions, ImageBackground, ScrollView } from 'react-native'
 import { useTheme } from '@react-navigation/native';
 
 import { AuthContext } from '../auth/Authentication'
@@ -7,11 +7,30 @@ import { fetchMovies } from '../lib/apiConnection'
 
 const { width, height } = Dimensions.get('window')
 
+const wait = timeout => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 const Home = () => {
   const [movies, setMovies] = useState([])
-  const { signOut } = useContext(AuthContext)
+  const [refreshing, setRefreshing] = useState(false);
   const { getToken } = useContext(AuthContext)
   const { colors } = useTheme();
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+
+  useEffect(() => {
+    if(refreshing) {
+      getToken().then(token => {
+        fetchMovies({token}).then(res => {
+          setMovies(res)
+        })
+      })
+    }
+  }, [refreshing])
 
   useEffect(() => {
     getToken().then(token => {
@@ -41,7 +60,14 @@ const Home = () => {
     <SafeAreaView style={{flex: 1}}>
       {!movies.length > 0 ?
       (<Text>Loading...</Text>) 
-      : <ScrollView contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', backgroundColor: colors.background }}>
+      : <ScrollView 
+          contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', backgroundColor: colors.background }}
+          refreshControl={
+            <RefreshControl 
+              refreshing={refreshing} 
+              onRefresh={onRefresh} 
+            />
+          }>
         {
           movies.map((movie, key) => {
             return (
