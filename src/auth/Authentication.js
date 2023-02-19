@@ -52,12 +52,12 @@ const Authentication = () => {
       let user
       try {
         user = JSON.parse(await AsyncStorage.getItem('user'))
-        console.log("bootstrap user", user);
       } catch(e) {
         console.log("error fetching token");
       }
-
-      dispatch({ type: 'RESTORE_TOKEN', token: user?.token, id: user?.id })
+      setTimeout(() => {
+        dispatch({ type: 'RESTORE_TOKEN', token: user?.token, id: user?.id })
+      }, 1000)
     }
 
     bootstrapAsync()
@@ -66,7 +66,6 @@ const Authentication = () => {
   const authContext = useMemo(() => ({
     signIn: async data => {
       try {
-        console.log("sign in data", data);
         await AsyncStorage.setItem('user', JSON.stringify(data))
       } catch(e) {
         console.log("error signing in", e);
