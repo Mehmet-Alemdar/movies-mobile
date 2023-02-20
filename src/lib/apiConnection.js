@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const baseUrl = "http://10.0.2.2:5000"
+const baseUrl = "https://movies-backend-5xm9.onrender.com"
 
 export const signInApi = async (path, body) => {
   try {
