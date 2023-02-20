@@ -29,7 +29,6 @@ const Profile = () => {
 
   useEffect(() => {
     if(user) {
-      console.log("user", user);
       setLoading(false)
     } else {
       setLoading(true)

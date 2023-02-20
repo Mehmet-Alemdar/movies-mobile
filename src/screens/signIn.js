@@ -33,7 +33,6 @@ const SignIn = ({ navigation }) => {
       "password": password
     }).then(res => {
       if(!res.error) {
-        console.log("sign in res:", res);
         signIn({email: email, token: res.token, id: res.id})
         return
       }
@@ -44,12 +43,6 @@ const SignIn = ({ navigation }) => {
       });
     })
   }
-
-  useEffect(() => {
-    getToken().then(res => {
-      console.log("sign in token", res);
-    })
-  }, [])
 
   return (
     <SafeAreaView style={{flex: 1}}>
