@@ -51,8 +51,6 @@ const SignIn = ({ navigation }) => {
     })
   }, [])
 
-
-
   return (
     <SafeAreaView style={{flex: 1}}>
       <SignUpBackgroundImage>

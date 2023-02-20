@@ -13,6 +13,7 @@ const wait = timeout => {
 
 const Home = () => {
   const [movies, setMovies] = useState([])
+  const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false);
   const { getToken } = useContext(AuthContext)
   const { colors } = useTheme();
@@ -27,6 +28,7 @@ const Home = () => {
       getToken().then(token => {
         fetchMovies({token}).then(res => {
           setMovies(res)
+          setLoading(false)
         })
       })
     }
@@ -36,6 +38,7 @@ const Home = () => {
     getToken().then(token => {
       fetchMovies({token}).then(res => {
         setMovies(res)
+        setLoading(false)
       })
     })
   }, [])
@@ -57,9 +60,9 @@ const Home = () => {
   }
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      {!movies.length > 0 ?
-      (<Text>Loading...</Text>) 
+    <SafeAreaView style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      {loading ?
+      (<Text style={{color: "white"}}>Loading...</Text>) 
       : <ScrollView 
           contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', backgroundColor: colors.background }}
           refreshControl={

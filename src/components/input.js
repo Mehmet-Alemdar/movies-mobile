@@ -9,6 +9,7 @@ const Input = ({ placeholder, value, onChangeText, secureTextEntry }) => {
   return (
     <TextInput 
       placeholder={placeholder}
+      placeholderTextColor="gray" 
       value={value}
       onChangeText={onChangeText}
       secureTextEntry={secureTextEntry}
